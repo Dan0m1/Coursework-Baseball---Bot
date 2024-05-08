@@ -1,7 +1,7 @@
 require('dotenv').config();
 import {Bot, GrammyError, HttpError} from 'grammy';
 
-const bot = new Bot('7127783747:AAEbY7TOLmXLw4M_bSgXdP0HNfTSr2Famtc');
+const bot = new Bot(process.env.BOT_API_KEY || '')
 
 bot.command('start', async (ctx) => {
   await ctx.reply("Привіт!")
