@@ -18,7 +18,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm install
+      - run: cd /var/www/baseballbot/_work/Coursework_Baseball_Bot/Coursework_Baseball_Bot
+      - run: npm ci
       - run: npm run build
       - run: pm2 stop 0
       - run: pm2 start 0
