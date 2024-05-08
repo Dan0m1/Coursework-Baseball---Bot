@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({path: '/var/www/baseballbot/_work/.env'});
 import {Bot, GrammyError, HttpError} from 'grammy';
 
 const bot = new Bot(process.env.BOT_API_KEY || '')
