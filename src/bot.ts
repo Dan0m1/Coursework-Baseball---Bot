@@ -1,4 +1,4 @@
-require('dotenv').config(/*{path: '/var/www/baseballbot/_work/.env'}*/);
+require('dotenv').config({path: '/var/www/baseballbot/_work/.env'});
 import {Bot, Context, GrammyError, HttpError, InlineKeyboard} from 'grammy';
 import { hydrate, HydrateFlavor } from "@grammyjs/hydrate";
 import { fetchSchedule } from '../lib/api/schedule';
