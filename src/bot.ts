@@ -4,7 +4,7 @@ import { hydrate, HydrateFlavor } from "@grammyjs/hydrate";
 import {schedule} from "./middleware/schedule";
 import {start} from "./middleware/start";
 import {EmojiFlavor, emojiParser} from "@grammyjs/emoji";
-import {createStorage, establishConnection} from "../lib/api/session";
+// import {createStorage, establishConnection} from "../lib/api/session";
 
 type game = {
   name: string;
@@ -30,15 +30,15 @@ export type MyContext = EmojiFlavor<HydrateFlavor<Context>> & LazySessionFlavor<
 
 async function bootstrap() {
 
-  const client = await establishConnection();
-  const storage = await createStorage(client);
+  // const client = await establishConnection();
+  // const storage = await createStorage(client);
 
   const bot = new Bot<MyContext>(process.env.BOT_API_KEY || '')
 
   bot.use(lazySession({
     initial: () => ({text: '', message_id: 0}),
     // @ts-ignore
-    storage: storage,
+    storage: new MemorySessionStorage(),
   }));
 
   bot.use(hydrate());

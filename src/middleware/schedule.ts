@@ -39,7 +39,6 @@ schedule.hears(/^\d{4}-\d{2}-\d{2}$/, async (ctx) => {
     let i = 0;
     let buttons = [];
     let rows = [];
-    // @ts-ignore
     let text = '';
     for(const game of response) {
         text += `\n${i}: ${game.name}`;
@@ -51,10 +50,6 @@ schedule.hears(/^\d{4}-\d{2}-\d{2}$/, async (ctx) => {
         }
     }
     text = `Всього матчів: ${i}\n\n\nОберіть матч:\n` + text;
-    const session = await ctx.session;
-    session.text = text;
-    session.games = response;
-
     rows.push(buttons);
     rows.push([InlineKeyboard.text("Завершити пошук", "end")]);
     keyboardSchedule = InlineKeyboard.from(rows);
@@ -62,6 +57,10 @@ schedule.hears(/^\d{4}-\d{2}-\d{2}$/, async (ctx) => {
     const message = await ctx.reply(text, {
         reply_markup: keyboardSchedule
     });
+    
+    const session = await ctx.session;
+    session.text = text;
+    session.games = response;
     session.message_id = message.message_id;
 });
 
