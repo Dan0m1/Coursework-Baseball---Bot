@@ -37,8 +37,6 @@ async function bootstrap() {
 
   bot.use(lazySession({
     initial: () => ({text: '', message_id: 0}),
-    // @ts-ignore
-    storage: new MemorySessionStorage(),
   }));
 
   bot.use(hydrate());
