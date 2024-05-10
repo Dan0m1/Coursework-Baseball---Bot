@@ -40,7 +40,16 @@ schedule.hears(/^\d{4}-\d{2}-\d{2}$/, async (ctx) => {
     let buttons = [];
     let rows = [];
     let text = '';
+    let games = [];
     for(const game of response) {
+        games.push(`${game.homeTeam} - ${game.awayTeam}
+          \nМісце проведення: ${game.venueFullName}
+          \nШтат: ${game.venueState}\tМісто: ${game.venueCity}
+          \nНайменша вартість квитків: ${game.ticketsPrice.match(/\d+/)}$
+          \nКількість доступних квитків: ${game.ticketsAvailable}
+          \nПочаток гри: ${game.startDate.match(/\d{2}:\d{2}/)}`);
+
+
         text += `\n${i}: ${game.name}`;
         buttons.push(InlineKeyboard.text(i.toString(), `game_${i}`));
         i++;
@@ -85,12 +94,7 @@ schedule.on('callback_query:data', async (ctx) => {
         const response = session.games;
         const data = response[+game];
         const gameText =
-            `${data.homeTeam} - ${data.awayTeam}
-          \nМісце проведення: ${data.venueFullName}
-          \nШтат: ${data.venueState}\tМісто: ${data.venueCity}
-          \nНайменша вартість квитків: ${data.ticketsPrice.match(/\d+/)}$
-          \nКількість доступних квитків: ${data.ticketsAvailable}
-          \nПочаток гри: ${data.startDate.match(/\d{2}:\d{2}/)}`;
+
 
         await ctx.editMessageText(gameText, {
             reply_markup: keyboardScheduleBack
