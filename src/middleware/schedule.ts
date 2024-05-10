@@ -29,7 +29,9 @@ schedule.hears(/^\d{4}-\d{2}-\d{2}$/, async (ctx) => {
 
     try{
         const session = await ctx.session;
-        await ctx.api.deleteMessage(ctx.chat.id, session.message_id);
+        if(session.message_id !== 0) {
+            await ctx.api.deleteMessage(ctx.chat.id, session.message_id);
+        }
     }catch (e) {
         console.log(e);
     }
