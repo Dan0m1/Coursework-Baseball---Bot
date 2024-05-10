@@ -3,8 +3,6 @@ name: Main
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   build:
@@ -17,6 +15,7 @@ jobs:
         with:
           node-version: "latest"
           cache: 'npm'
+      - run: cd /var/www/baseballbot/_work/Coursework_Baseball_Bot/Coursework_Baseball_Bot
       - run: npm ci
       - name: Build
         run: npm run build
@@ -27,5 +26,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - run: cd /var/www/baseballbot/_work/Coursework_Baseball_Bot/Coursework_Baseball_Bot
       - run: pm2 restart all
       - run: sudo service nginx restart
