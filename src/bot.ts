@@ -1,11 +1,19 @@
 require('dotenv').config({path: '/var/www/baseballbot/_work/.env'});
-import {Bot, Context, GrammyError, HttpError, SessionFlavor, session, InlineKeyboard} from 'grammy';
+import {
+  Bot,
+  Context,
+  GrammyError,
+  HttpError,
+  LazySessionFlavor,
+  lazySession,
+  InlineKeyboard
+} from 'grammy';
 import { hydrate, HydrateFlavor } from "@grammyjs/hydrate";
 import {schedule} from "./middleware/schedule";
 import {start} from "./middleware/start";
 import {EmojiFlavor, emojiParser} from "@grammyjs/emoji";
-import { run } from "@grammyjs/runner";
-// import {createStorage, establishConnection} from "../lib/api/session";
+import {createStorage, establishConnection} from "../lib/api/session";
+import {run} from "@grammyjs/runner";
 
 interface SessionData {
   text: string;
@@ -15,16 +23,19 @@ interface SessionData {
 }
 
 
-export type MyContext = EmojiFlavor<HydrateFlavor<Context>> & SessionFlavor<SessionData>;
+export type MyContext = EmojiFlavor<HydrateFlavor<Context>> & LazySessionFlavor<SessionData>;
 
 async function bootstrap() {
 
-  // const client = await establishConnection();
-  // const storage = await createStorage(client);
+  const client = await establishConnection();
+  const storage = await createStorage(client);
 
   const bot = new Bot<MyContext>(process.env.BOT_API_KEY || '')
-  bot.use(session({
+
+  bot.use(lazySession({
     initial: () => ({text: '', message_id: 0}),
+    // @ts-ignore
+    storage: storage,
   }));
 
   bot.use(hydrate());
