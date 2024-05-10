@@ -6,7 +6,7 @@ export async function establishConnection() {
         connectionString: process.env.SESSION_DATABASE_URL,
         ssl: {
             rejectUnauthorized: false
-        }
+        },
     });
 
     await client.connect();
