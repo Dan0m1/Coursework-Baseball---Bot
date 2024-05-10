@@ -52,7 +52,8 @@ schedule.hears(/^\d{4}-\d{2}-\d{2}$/, async (ctx) => {
     text = `Всього матчів: ${i}\n\n\nОберіть матч:\n` + text;
     rows.push(buttons);
     rows.push([InlineKeyboard.text("Завершити пошук", "end")]);
-    keyboardSchedule = InlineKeyboard.from(rows);
+    const keyboardSchedule = InlineKeyboard.from(rows);
+
 
     const message = await ctx.reply(text, {
         reply_markup: keyboardSchedule
@@ -62,9 +63,9 @@ schedule.hears(/^\d{4}-\d{2}-\d{2}$/, async (ctx) => {
     session.text = text;
     session.games = response;
     session.message_id = message.message_id;
+    session.inlineKeyboard = keyboardSchedule;
 });
 
-let keyboardSchedule: InlineKeyboard;
 const keyboardBuyTicket = new InlineKeyboard().text("Купити квиток", "buy");
 const keyboardScheduleBack = new InlineKeyboard().text("Повернутись до списку матчів", "back");
 
@@ -74,7 +75,7 @@ schedule.on('callback_query:data', async (ctx) => {
     if(ctx.callbackQuery.data === 'back') {
         const session = ctx.session;
         await ctx.editMessageText(session.text, {
-            reply_markup: keyboardSchedule
+            reply_markup: session.inlineKeyboard
         });
     }
 

@@ -1,5 +1,5 @@
 require('dotenv').config({path: '/var/www/baseballbot/_work/.env'});
-import {Bot, Context, GrammyError, HttpError, SessionFlavor, session} from 'grammy';
+import {Bot, Context, GrammyError, HttpError, SessionFlavor, session, InlineKeyboard} from 'grammy';
 import { hydrate, HydrateFlavor } from "@grammyjs/hydrate";
 import {schedule} from "./middleware/schedule";
 import {start} from "./middleware/start";
@@ -24,6 +24,7 @@ interface SessionData {
   text: string;
   message_id: number;
   games: game[];
+  inlineKeyboard: InlineKeyboard;
 }
 
 
