@@ -4,6 +4,7 @@ import { hydrate, HydrateFlavor } from "@grammyjs/hydrate";
 import {schedule} from "./middleware/schedule";
 import {start} from "./middleware/start";
 import {EmojiFlavor, emojiParser} from "@grammyjs/emoji";
+import { run } from "@grammyjs/runner";
 // import {createStorage, establishConnection} from "../lib/api/session";
 
 type game = {
@@ -34,7 +35,6 @@ async function bootstrap() {
   // const storage = await createStorage(client);
 
   const bot = new Bot<MyContext>(process.env.BOT_API_KEY || '')
-
   bot.use(session({
     initial: () => ({text: '', message_id: 0}),
   }));
@@ -59,7 +59,11 @@ async function bootstrap() {
     }
   });
 
-  bot.start();
+  const handle = run(bot);
+  // @ts-ignore
+  handle.task().then(() => {
+    console.log("Бот завершив обробку!");
+  });
 }
 
 bootstrap().catch(console.error);
