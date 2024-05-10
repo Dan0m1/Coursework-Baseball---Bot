@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Main
 
 on:
   push:
@@ -8,20 +8,23 @@ on:
 
 jobs:
   build:
-
     runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js@latest
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: "latest"
           cache: 'npm'
-      - run: cd /var/www/baseballbot/_work/Coursework_Baseball_Bot/Coursework_Baseball_Bot
       - run: npm ci
-      - run: npm run build
-      - run: pm2 stop 0
-      - run: pm2 start 0
-      - run: pm2 save
+      - name: Build
+        run: npm run build
+
+  start:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: pm2 restart all
       - run: sudo service nginx restart
