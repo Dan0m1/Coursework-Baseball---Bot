@@ -28,7 +28,7 @@ schedule.hears(/^\d{4}-\d{2}-\d{2}$/, async (ctx) => {
     }
 
     try{
-        const session = await ctx.session;
+        const session = ctx.session;
         if(session.message_id !== 0) {
             await ctx.api.deleteMessage(ctx.chat.id, session.message_id);
         }
@@ -57,8 +57,8 @@ schedule.hears(/^\d{4}-\d{2}-\d{2}$/, async (ctx) => {
     const message = await ctx.reply(text, {
         reply_markup: keyboardSchedule
     });
-    
-    const session = await ctx.session;
+
+    const session = ctx.session;
     session.text = text;
     session.games = response;
     session.message_id = message.message_id;
@@ -72,7 +72,7 @@ schedule.on('callback_query:data', async (ctx) => {
     await ctx.answerCallbackQuery();
 
     if(ctx.callbackQuery.data === 'back') {
-        const session = await ctx.session;
+        const session = ctx.session;
         await ctx.editMessageText(session.text, {
             reply_markup: keyboardSchedule
         });
@@ -80,7 +80,7 @@ schedule.on('callback_query:data', async (ctx) => {
 
     if(ctx.callbackQuery.data.startsWith('game_')) {
         const game = ctx.callbackQuery.data.split('_')[1];
-        const session = await ctx.session;
+        const session = ctx.session;
         const response = session.games;
         const data = response[+game];
         const gameText =

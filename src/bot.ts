@@ -1,5 +1,5 @@
 require('dotenv').config({path: '/var/www/baseballbot/_work/.env'});
-import {Bot, Context, GrammyError, HttpError, LazySessionFlavor, lazySession, enhanceStorage} from 'grammy';
+import {Bot, Context, GrammyError, HttpError, SessionFlavor, session} from 'grammy';
 import { hydrate, HydrateFlavor } from "@grammyjs/hydrate";
 import {schedule} from "./middleware/schedule";
 import {start} from "./middleware/start";
@@ -26,7 +26,7 @@ interface SessionData {
 }
 
 
-export type MyContext = EmojiFlavor<HydrateFlavor<Context>> & LazySessionFlavor<SessionData>;
+export type MyContext = EmojiFlavor<HydrateFlavor<Context>> & SessionFlavor<SessionData>;
 
 async function bootstrap() {
 
@@ -35,7 +35,7 @@ async function bootstrap() {
 
   const bot = new Bot<MyContext>(process.env.BOT_API_KEY || '')
 
-  bot.use(lazySession({
+  bot.use(session({
     initial: () => ({text: '', message_id: 0}),
   }));
 
