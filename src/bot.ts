@@ -7,23 +7,10 @@ import {EmojiFlavor, emojiParser} from "@grammyjs/emoji";
 import { run } from "@grammyjs/runner";
 // import {createStorage, establishConnection} from "../lib/api/session";
 
-type game = {
-  name: string;
-  id: number;
-  homeTeam: string;
-  awayTeam: string;
-  venueFullName: string;
-  venueCity: string;
-  venueState: string;
-  ticketsPrice: string;
-  ticketsAvailable: string;
-  startDate: string;
-}
-
 interface SessionData {
   text: string;
   message_id: number;
-  games: game[];
+  games: string[];
   inlineKeyboard: InlineKeyboard;
 }
 

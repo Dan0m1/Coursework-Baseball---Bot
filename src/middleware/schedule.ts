@@ -91,11 +91,7 @@ schedule.on('callback_query:data', async (ctx) => {
     if(ctx.callbackQuery.data.startsWith('game_')) {
         const game = ctx.callbackQuery.data.split('_')[1];
         const session = ctx.session;
-        const response = session.games;
-        const data = response[+game];
-        const gameText =
-
-
+        const gameText = session.games[+game];
         await ctx.editMessageText(gameText, {
             reply_markup: keyboardScheduleBack
         });
