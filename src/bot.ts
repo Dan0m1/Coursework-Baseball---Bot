@@ -1,4 +1,4 @@
-require('dotenv').config(/*{path: '/var/www/baseballbot/_work/.env'}*/);
+require('dotenv').config({path: '/var/www/baseballbot/_work/.env'});
 import {
   Bot,
   Context,
