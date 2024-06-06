@@ -8,12 +8,13 @@ export async function upsertUser(userId: number, name: string) {
             'content-type': 'application/json',
         },
         data: {
-            userId: userId,
+            id: userId,
             name: name
         },
     };
     try {
-        const result = await axios.request(options);
+        const response = await axios.request(options);
+        console.log(response.data);
     }
     catch (error) {
         console.error(error)

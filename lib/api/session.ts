@@ -1,5 +1,6 @@
 import {Client} from "pg";
 import {PsqlAdapter} from "@grammyjs/storage-psql";
+import {SessionData} from "../../src/bot";
 
 export async function establishConnection() {
     const client  = new Client({
@@ -14,5 +15,6 @@ export async function establishConnection() {
 }
 
 export async function createStorage(client: Client) {
-    const adapter = await PsqlAdapter.create({ tableName: 'sessions', client });
+    const adapter = await (PsqlAdapter<SessionData>).create({ tableName: 'sessions', client });
+    return adapter;
 }

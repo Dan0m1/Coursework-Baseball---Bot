@@ -8,22 +8,39 @@ import {
   lazySession,
   InlineKeyboard
 } from 'grammy';
+import {
+  type Conversation,
+  type ConversationFlavor,
+  conversations,
+  createConversation,
+} from "@grammyjs/conversations";
 import { hydrate, HydrateFlavor } from "@grammyjs/hydrate";
 import {schedule} from "./middleware/schedule";
 import {start} from "./middleware/start";
+import {ticket} from "./middleware/ticket";
 import {EmojiFlavor, emojiParser} from "@grammyjs/emoji";
 import {createStorage, establishConnection} from "../lib/api/session";
 import {run} from "@grammyjs/runner";
 
-interface SessionData {
-  text: string;
-  message_id: number;
-  games: string[];
-  inlineKeyboard: InlineKeyboard;
+export interface SessionData {
+  schedule_text: string;
+  schedule_message_id: number;
+  schedule_games: string[];
+  schedule_inlineKeyboard: InlineKeyboard;
+  schedule_map: [];
+  ticket_text: string;
+  ticket_message_id: number;
+  ticket_inlineKeyboard: InlineKeyboard;
+  schedule_email: string;
+  schedule_place: string;
+  schedule_gameId: string;
+  schedule_fromId: string;
 }
 
 
-export type MyContext = EmojiFlavor<HydrateFlavor<Context>> & LazySessionFlavor<SessionData>;
+export type MyContext = EmojiFlavor<HydrateFlavor<Context>> & LazySessionFlavor<SessionData> & ConversationFlavor;
+export type MyConversation = Conversation<MyContext>
+
 
 async function bootstrap() {
 
@@ -33,16 +50,20 @@ async function bootstrap() {
   const bot = new Bot<MyContext>(process.env.BOT_API_KEY || '')
 
   bot.use(lazySession({
-    initial: () => ({text: '', message_id: 0}),
-    // @ts-ignore
-    storage: storage,
+      storage: storage,
+      initial: () => ({schedule_text: '', schedule_message_id: 0, ticket_text: '', ticket_message_id: 0}),
+
   }));
 
+  bot.use(conversations());
   bot.use(hydrate());
   bot.use(emojiParser());
 
   bot.use(start)
   bot.use(schedule)
+  bot.use(ticket)
+
+
 
   bot.catch((err) => {
     const ctx = err.ctx;
