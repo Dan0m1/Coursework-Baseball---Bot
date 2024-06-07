@@ -44,7 +44,7 @@ ticket.command('tickets', async (ctx, next) => {
     session.ticket_inlineKeyboard = keyboard;
 })
 
-ticket.callbackQuery("back", async (ctx) => {
+ticket.callbackQuery("ticket_back", async (ctx) => {
     await ctx.answerCallbackQuery();
 
     const session:any = await ctx.session;
@@ -69,6 +69,6 @@ ticket.callbackQuery(/^ticket_/, async (ctx) => {
           \nМісце: ${ticketPlace}
           \nEmail: ${userEmail}`;
     await ctx.editMessageText(gameText, {
-        reply_markup: new InlineKeyboard().text("Повернутись до списку квитків", "back")
+        reply_markup: new InlineKeyboard().text("Повернутись до списку квитків", "ticket_back")
     });
 })
