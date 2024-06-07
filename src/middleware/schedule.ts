@@ -81,9 +81,9 @@ schedule.hears(/^\d{4}-\d{2}-\d{2}$/, async (ctx, next) => {
     session.schedule_map = map;
 });
 
-const keyboardScheduleBack = new InlineKeyboard().text("Повернутись до списку матчів", "back");
+const keyboardScheduleBack = new InlineKeyboard().text("Повернутись до списку матчів", "schedule_back");
 
-schedule.callbackQuery("back", async (ctx) => {
+schedule.callbackQuery("schedule_back", async (ctx) => {
     await ctx.answerCallbackQuery();
 
     const session: any = await ctx.session;
@@ -99,7 +99,7 @@ schedule.callbackQuery(/^game_/, async (ctx) => {
     const session: any = await ctx.session;
     const gameText = session.schedule_games[+game];
     await ctx.editMessageText(gameText, {
-        reply_markup: new InlineKeyboard().text("Придбати квиток", `buy_${game}`).row().text("Повернутись до списку матчів", "back")
+        reply_markup: new InlineKeyboard().text("Придбати квиток", `buy_${game}`).row().text("Повернутись до списку матчів", "schedule_back")
     });
 })
 
